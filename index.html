@@ -22,7 +22,7 @@ html,body{overflow-x:hidden}
 body{margin:0;color:var(--ink);font-family:"Suit","Pretendard","Apple SD Gothic Neo",sans-serif;font-size:16px;font-weight:400;line-height:1.95;word-break:keep-all;-webkit-touch-callout:none}
 main{max-width:38em;margin:0 auto;padding:40px 18px 140px}
 header{margin-bottom:56px}
-h1{font-family:'Cafe24ProUp','Suit',sans-serif;font-weight:normal;margin:0 0 18px;line-height:1;word-break:keep-all}
+h1{font-family:'Cafe24ProUp','Suit',sans-serif;font-weight:normal;margin:0 0 18px;line-height:1;word-break:keep-all;text-align:center}
 h1 .ln{display:block;white-space:nowrap;font-size:40px;line-height:1.02;letter-spacing:-.01em}
 .meta{color:var(--mut);font-size:12px}
 .p{position:relative;padding:22px 0}
@@ -155,7 +155,7 @@ function openCompose(sec,cx,cy,note){
 render();
 fetchAll();
 // 제목 세 줄을 각각 가로폭에 맞춤
-function fitTitle(){const h=document.getElementById("title");const w=h.clientWidth;h.querySelectorAll(".ln").forEach(l=>{l.style.fontSize="100px";const tw=l.scrollWidth;l.style.fontSize=Math.max(12,100*w/tw)+"px"})}
+function fitTitle(){const h=document.getElementById("title");const w=h.clientWidth;const ls=[...h.querySelectorAll(".ln")];ls.forEach(l=>l.style.fontSize="100px");const fs=Math.max(12,Math.min(...ls.map(l=>100*w/l.scrollWidth)));ls.forEach(l=>l.style.fontSize=fs+"px")}
 fitTitle();addEventListener("resize",fitTitle);if(document.fonts)document.fonts.ready.then(fitTitle);
 </script>
 </body>
