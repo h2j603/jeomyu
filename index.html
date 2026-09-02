@@ -22,8 +22,8 @@ html,body{overflow-x:hidden}
 body{margin:0;color:var(--ink);font-family:"Suit","Pretendard","Apple SD Gothic Neo",sans-serif;font-size:16px;font-weight:400;line-height:1.95;word-break:keep-all;-webkit-touch-callout:none}
 main{max-width:38em;margin:0 auto;padding:40px 18px 140px}
 header{margin-bottom:56px}
-h1{font-family:'Cafe24ProUp','Suit',sans-serif;font-weight:normal;font-size:34px;line-height:1.25;margin:0 0 14px;word-break:keep-all}
-@media (min-width:700px){h1{font-size:46px}}
+h1{font-family:'Cafe24ProUp','Suit',sans-serif;font-weight:normal;margin:0 0 18px;line-height:1;word-break:keep-all}
+h1 .ln{display:block;white-space:nowrap;font-size:40px;line-height:1.02;letter-spacing:-.01em}
 .meta{color:var(--mut);font-size:12px}
 .p{position:relative;padding:22px 0}
 .p .txt{margin:0;white-space:pre-wrap;user-select:none;-webkit-user-select:none}
@@ -61,7 +61,7 @@ footer{margin-top:40px;font-size:12px;color:var(--mut);border-top:1px solid var(
 <body>
 <main>
 <header>
-  <h1>웹을 *본래와 다른 목적으로* 점유하기</h1>
+  <h1 id="title"><span class="ln">웹을</span><span class="ln">*본래와 다른 목적으로*</span><span class="ln">점유하기</span></h1>
   <div class="meta">장혁 · 2026 · 이 칸에 남은 리플 <span id="cnt">0</span>개 · 글이나 리플을 길게 누르면 그 자리에 리플을 남길 수 있습니다</div>
 </header>
 <div id="essay"></div>
@@ -154,6 +154,9 @@ function openCompose(sec,cx,cy,note){
 }
 render();
 fetchAll();
+// 제목 세 줄을 각각 가로폭에 맞춤
+function fitTitle(){const h=document.getElementById("title");const w=h.clientWidth;h.querySelectorAll(".ln").forEach(l=>{l.style.fontSize="100px";const tw=l.scrollWidth;l.style.fontSize=Math.max(12,100*w/tw)+"px"})}
+fitTitle();addEventListener("resize",fitTitle);if(document.fonts)document.fonts.ready.then(fitTitle);
 </script>
 </body>
 </html>
