@@ -4,23 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>웹을 본래와 다른 목적으로 점유하기</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Thin.woff2') format('woff2');font-weight:100;font-display:swap}
+@font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraLight.woff2') format('woff2');font-weight:200;font-display:swap}
+@font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Light.woff2') format('woff2');font-weight:300;font-display:swap}
+@font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraBold.woff2') format('woff2');font-weight:800;font-display:swap}
+@font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Heavy.woff2') format('woff2');font-weight:900;font-display:swap}
 @font-face{font-family:'Cafe24ProUp';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2507-1@1.0/Cafe24PROUP.woff2') format('woff2');font-weight:normal;font-display:swap}
 :root{--ink:#111;--mut:#777;--rule:#ccc;--link:#0000ee;--bg:#fff;--paper:rgba(255,255,255,.94)}
 *{box-sizing:border-box}
 html{background:var(--bg)}
 html,body{overflow-x:hidden}
-body{margin:0;color:var(--ink);font-family:"Nanum Gothic Coding","D2Coding","Apple SD Gothic Neo",monospace;font-size:14px;line-height:1.9;word-break:keep-all;-webkit-touch-callout:none}
+body{margin:0;color:var(--ink);font-family:"Suit","Pretendard","Apple SD Gothic Neo",sans-serif;font-size:15px;font-weight:400;line-height:1.95;word-break:keep-all;-webkit-touch-callout:none}
 main{max-width:38em;margin:0 auto;padding:40px 18px 140px}
 header{margin-bottom:56px}
-h1{font-size:14px;font-weight:700;margin:0 0 6px;line-height:1.6}
+h1{font-size:15px;font-weight:700;margin:0 0 6px;line-height:1.6}
 .meta{color:var(--mut);font-size:12px}
 .p{position:relative;padding:22px 0}
 .p .txt{margin:0;white-space:pre-wrap;user-select:none;-webkit-user-select:none}
 .p.pressing .txt{color:var(--mut)}
-.note{position:absolute;width:14em;max-width:78vw;font-family:'Cafe24ProUp','Nanum Gothic Coding',sans-serif;font-size:13px;line-height:1.55;background:#fff;border:1px solid var(--ink);padding:8px 10px;box-shadow:2px 2px 0 var(--ink);opacity:1;cursor:pointer;animation:drift var(--dur,12s) ease-in-out infinite alternate;user-select:none;-webkit-user-select:none;z-index:2}
+.note{position:absolute;width:14em;max-width:78vw;font-family:'Cafe24ProUp','Suit',sans-serif;font-size:13px;line-height:1.55;background:#fff;border:1px solid var(--ink);padding:8px 10px;box-shadow:2px 2px 0 var(--ink);opacity:1;cursor:pointer;animation:drift var(--dur,12s) ease-in-out infinite alternate;user-select:none;-webkit-user-select:none;z-index:2}
 .note.front{z-index:20;animation-play-state:paused;box-shadow:4px 4px 0 var(--ink);width:19em;max-width:88vw}
 .note .who{font-size:11px;color:var(--mut);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .note .who b{color:var(--ink)}
@@ -41,7 +48,7 @@ input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .btns .send{background:var(--ink);color:#fff;border-color:var(--ink)}
 .hint{font-size:11px;color:var(--mut)}
 footer{margin-top:80px;font-size:12px;color:var(--mut);border-top:1px solid var(--rule);padding-top:10px}
-@media (max-width:480px){body{font-size:13.5px}main{padding-top:28px}.p{padding:26px 0}}
+@media (max-width:480px){body{font-size:14.5px}main{padding-top:28px}.p{padding:26px 0}}
 </style>
 </head>
 <body>
