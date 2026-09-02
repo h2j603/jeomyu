@@ -15,7 +15,7 @@
 @font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraBold.woff2') format('woff2');font-weight:800;font-display:swap}
 @font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Heavy.woff2') format('woff2');font-weight:900;font-display:swap}
 @font-face{font-family:'Cafe24ProUp';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2507-1@1.0/Cafe24PROUP.woff2') format('woff2');font-weight:normal;font-display:swap}
-:root{--ink:#111;--mut:rgba(0,0,0,.55);--rule:rgba(0,0,0,.35);--link:#0000ee;--bg:#fa853c;--paper:var(--bg)}
+:root{--ink:#111;--mut:rgba(0,0,0,.55);--rule:rgba(0,0,0,.35);--link:var(--ink);--bg:#fa853c;--paper:var(--bg)}
 *{box-sizing:border-box}
 html{background:var(--bg)}
 html,body{overflow-x:hidden}
@@ -32,7 +32,7 @@ h1 .ln{display:block;white-space:nowrap;font-size:40px;line-height:1.2;letter-sp
 .note.front{z-index:20;animation-play-state:paused;box-shadow:4px 4px 0 var(--ink);width:19em;max-width:88vw}
 .note .who{font-size:11px;color:var(--mut);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .note .who b{color:var(--ink)}
-.note .who a{color:var(--link);text-decoration:none;margin-left:.5em}
+.note .who a{color:var(--ink);text-decoration:underline;text-underline-offset:.15em;margin-left:.5em}
 .note .body{white-space:pre-wrap;overflow-wrap:anywhere;max-height:6.2em;overflow:hidden}
 .note.front .body{max-height:none}
 .note .src{font-size:10.5px;color:var(--mut);margin-top:3px;display:none}
@@ -41,19 +41,19 @@ h1 .ln{display:block;white-space:nowrap;font-size:40px;line-height:1.2;letter-sp
 @keyframes drift{from{transform:translate(0,0) rotate(var(--rot,0deg))}to{transform:translate(var(--dx,6px),var(--dy,-8px)) rotate(var(--rot,0deg))}}
 .compose{position:absolute;z-index:30;width:19em;max-width:86vw;background:var(--paper);border:1px solid var(--ink);padding:8px;display:flex;flex-direction:column;gap:6px;font-size:12px;box-shadow:0 4px 18px rgba(0,0,0,.16)}
 .compose .to{color:var(--mut);font-size:11px}
-input,textarea,button{font:inherit;color:inherit;border:1px solid var(--rule);background:#fafafa;padding:5px 7px;border-radius:0;width:100%}
+input,textarea,button{font:inherit;color:inherit;border:1px solid var(--ink);background:transparent;padding:5px 7px;border-radius:0;width:100%}
 textarea{min-height:6em;resize:vertical;white-space:pre-wrap;line-height:1.6}
 input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .btns{display:flex;gap:6px}
 .btns button{cursor:pointer;width:auto;padding:5px 12px}
-.btns .send{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btns .send{text-decoration:underline;text-underline-offset:.15em}
 .hint{font-size:11px;color:var(--mut)}
 sup{font-size:.7em;line-height:0;vertical-align:.45em}
 sup a{color:var(--ink);text-decoration:none;padding:0 .1em}
 .fn{margin:72px 0 0;padding:16px 0 0 1.6em;border-top:1px solid var(--rule);font-size:12.5px;line-height:1.7;color:var(--ink);word-break:keep-all}
 .fn li{margin:0 0 10px;padding-left:.2em}
-.fn a{color:var(--link);text-decoration:none}
-.fn a:hover{text-decoration:underline}
+.fn a.back{margin-left:.4em}
+.fn a{color:var(--ink);text-decoration:underline;text-underline-offset:.15em}
 footer{margin-top:40px;font-size:12px;color:var(--mut);border-top:1px solid var(--rule);padding-top:10px}
 @media (max-width:480px){body{font-size:16px}main{padding-top:28px}.p{padding:26px 0}}
 </style>
@@ -65,13 +65,13 @@ footer{margin-top:40px;font-size:12px;color:var(--mut);border-top:1px solid var(
 </header>
 <div id="essay"></div>
 <ol class="fn" id="fn">
-<li id="fn1">Olia Lialina, “Turing Complete User” (2012). “General Purpose Users can write an article in their e-mail client, layout their business card in Excel and shave in front of a web cam.” / “what I mean are users who have the ability to achieve their goals regardless of the primary purpose of an application or device.” <a href="http://contemporary-home-computing.org/turing-complete-user/" target="_blank" rel="noopener">contemporary-home-computing.org</a> <a href="#r1">↩</a></li>
-<li id="fn2">민법 제192조는 물건을 사실상 지배하는 자에게 점유권을 인정한다. 소유와 점유의 구분이 웹에서는 플랫폼과 사용자 사이에 그대로 놓인다. <a href="#r2">↩</a></li>
-<li id="fn3">Michel de Certeau, The Practice of Everyday Life (1984, tr. Steven Rendall), ch. XII “Reading as Poaching”: “Readers are travellers; they move across lands belonging to someone else, like nomads poaching their way across fields they did not write.” 같은 책에서 그는 제도가 자기 자리를 갖고 세우는 것을 ‘전략’, 자리 없는 사용자가 그 위에서 만들어내는 것을 ‘전술’이라 불렀다. “The space of a tactic is the space of the other.” <a href="#r3">↩</a></li>
-<li id="fn4">더 큰 규모의 사례로 해시태그가 있다. 2007년 사용자 Chris Messina가 트윗으로 제안한 관습을 트위터가 2009년에야 링크 기능으로 흡수했다. RT 역시 사용자들이 먼저 쓰던 표기다. <a href="#r4">↩</a></li>
-<li id="fn5">Alan Dix, “Designing for Appropriation” (BCS HCI 2007). “You may not be able to design for the unexpected, but you can design to allow the unexpected.” 그가 제안한 일곱 원칙 중: allow interpretation — “include elements where users can add their own meanings”; encourage sharing — “People are proud of their appropriations of technology, so let them tell others about it!” <a href="https://alandix.com/academic/papers/HCI2007-appropriation/" target="_blank" rel="noopener">alandix.com</a> <a href="#r5">↩</a></li>
-<li id="fn6">Laurel Schwulst, “My website is a shifting house next to a river of knowledge. What could yours be?” (The Creative Independent, 2018), ‘Website as room’: “a room is comforting because it’s finite, often with a specific intended purpose. Simultaneously, a room can be flexible: you can shift its contents or even include a temporary partition, depending on occasion.” <a href="https://thecreativeindependent.com/essays/laurel-schwulst-my-website-is-a-shifting-house-next-to-a-river-of-knowledge-what-could-yours-be/" target="_blank" rel="noopener">thecreativeindependent.com</a> <a href="#r6">↩</a></li>
-<li id="fn7">are.na는 블록과 채널로 자료를 모으는 리서치 아카이브 도구다. hyuk.xyz는 이 채널을 CMS로 읽어 페이지를 만든다. <a href="https://www.are.na" target="_blank" rel="noopener">are.na</a> <a href="#r7">↩</a></li>
+<li id="fn1">Olia Lialina, “Turing Complete User” (2012). “General Purpose Users can write an article in their e-mail client, layout their business card in Excel and shave in front of a web cam.” / “what I mean are users who have the ability to achieve their goals regardless of the primary purpose of an application or device.” <a href="http://contemporary-home-computing.org/turing-complete-user/" target="_blank" rel="noopener">contemporary-home-computing.org</a><a class="back" href="#r1">본문</a></li>
+<li id="fn2">민법 제192조는 물건을 사실상 지배하는 자에게 점유권을 인정한다. 소유와 점유의 구분이 웹에서는 플랫폼과 사용자 사이에 그대로 놓인다.<a class="back" href="#r2">본문</a></li>
+<li id="fn3">Michel de Certeau, The Practice of Everyday Life (1984, tr. Steven Rendall), ch. XII “Reading as Poaching”: “Readers are travellers; they move across lands belonging to someone else, like nomads poaching their way across fields they did not write.” 같은 책에서 그는 제도가 자기 자리를 갖고 세우는 것을 ‘전략’, 자리 없는 사용자가 그 위에서 만들어내는 것을 ‘전술’이라 불렀다. “The space of a tactic is the space of the other.”<a class="back" href="#r3">본문</a></li>
+<li id="fn4">더 큰 규모의 사례로 해시태그가 있다. 2007년 사용자 Chris Messina가 트윗으로 제안한 관습을 트위터가 2009년에야 링크 기능으로 흡수했다. RT 역시 사용자들이 먼저 쓰던 표기다.<a class="back" href="#r4">본문</a></li>
+<li id="fn5">Alan Dix, “Designing for Appropriation” (BCS HCI 2007). “You may not be able to design for the unexpected, but you can design to allow the unexpected.” 그가 제안한 일곱 원칙 중: allow interpretation — “include elements where users can add their own meanings”; encourage sharing — “People are proud of their appropriations of technology, so let them tell others about it!” <a href="https://alandix.com/academic/papers/HCI2007-appropriation/" target="_blank" rel="noopener">alandix.com</a><a class="back" href="#r5">본문</a></li>
+<li id="fn6">Laurel Schwulst, “My website is a shifting house next to a river of knowledge. What could yours be?” (The Creative Independent, 2018), ‘Website as room’: “a room is comforting because it’s finite, often with a specific intended purpose. Simultaneously, a room can be flexible: you can shift its contents or even include a temporary partition, depending on occasion.” <a href="https://thecreativeindependent.com/essays/laurel-schwulst-my-website-is-a-shifting-house-next-to-a-river-of-knowledge-what-could-yours-be/" target="_blank" rel="noopener">thecreativeindependent.com</a><a class="back" href="#r6">본문</a></li>
+<li id="fn7">are.na는 블록과 채널로 자료를 모으는 리서치 아카이브 도구다. hyuk.xyz는 이 채널을 CMS로 읽어 페이지를 만든다. <a href="https://www.are.na" target="_blank" rel="noopener">are.na</a><a class="back" href="#r7">본문</a></li>
 </ol>
 <footer>이 페이지는 글이 아니라 댓글칸입니다. 텍스트만 받습니다. 유니코드는 깨지지 않습니다. 길게 누르면 리플.</footer>
 </main>
@@ -106,8 +106,8 @@ Object.entries(SEED).forEach(([p,arr])=>arr.forEach((r,k)=>{const h=hash(r.who+k
 const notes=()=>[...ALL,...USER];
 function noteEl(r){
   const h=hash(r.id);
-  const farm=r.farm?`<a href="${esc(r.farm)}" target="_blank" rel="noopener">⌂ ${esc(r.farmLabel||host(r.farm))}</a>`:"";
-  const to=r.to?`<div class="to">↳ ${esc(r.to)}</div>`:"";
+  const farm=r.farm?`<a href="${esc(r.farm)}" target="_blank" rel="noopener">${esc(r.farmLabel||host(r.farm))}</a>`:"";
+  const to=r.to?`<div class="to">${esc(r.to)}에게</div>`:"";
   const src=r.src?`<div class="src">${esc(r.src)}</div>`:"";
   return `<div class="note" data-id="${r.id}" style="left:${r.x}%;top:${r.y}%;--dur:${9+h*9}s;--dx:${(h-.5)*28}px;--dy:${-6-h*16}px;--rot:${(hash(r.id+"r")-.5)*5}deg">${to}<div class="who"><b>${esc(r.who)}</b>${farm}</div><div class="body">${esc(r.body)}</div>${src}</div>`;
 }
@@ -142,7 +142,7 @@ function openCompose(sec,cx,cy,note){
   const x=Math.max(0,Math.min(60,(cx-b.left)/b.width*100)),y=Math.max(0,Math.min(90,(cy-b.top)/b.height*100));
   const to=note?note.querySelector(".who b").textContent:"";
   const f=document.createElement("form");f.className="compose";f.style.left=x+"%";f.style.top=y+"%";
-  f.innerHTML=`${to?`<div class="to">↳ ${esc(to)}에게</div>`:""}<input name="who" placeholder="이름" maxlength="40" required><input name="farm" placeholder="링크 (선택)" inputmode="url"><textarea name="body" placeholder="텍스트만 받습니다. 특수문자로 꾸며도 됩니다." maxlength="2000" required></textarea><div class="btns"><button class="send" type="submit">남기기</button><button type="button" class="x">취소</button></div><div class="hint">남긴 리플은 모두에게 보입니다. 지울 수 없습니다.</div>`;
+  f.innerHTML=`${to?`<div class="to">${esc(to)}에게</div>`:""}<input name="who" placeholder="이름" maxlength="40" required><input name="farm" placeholder="링크 (선택)" inputmode="url"><textarea name="body" placeholder="텍스트만 받습니다. 특수문자로 꾸며도 됩니다." maxlength="2000" required></textarea><div class="btns"><button class="send" type="submit">남기기</button><button type="button" class="x">취소</button></div><div class="hint">남긴 리플은 모두에게 보입니다. 지울 수 없습니다.</div>`;
   sec.appendChild(f);f.who.focus();
   f.querySelector(".x").onclick=()=>f.remove();
   f.onsubmit=async ev=>{ev.preventDefault();const b=f.querySelector(".send");b.disabled=true;b.textContent="남기는 중…";
