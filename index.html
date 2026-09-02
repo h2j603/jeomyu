@@ -15,20 +15,20 @@
 @font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraBold.woff2') format('woff2');font-weight:800;font-display:swap}
 @font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Heavy.woff2') format('woff2');font-weight:900;font-display:swap}
 @font-face{font-family:'Cafe24ProUp';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2507-1@1.0/Cafe24PROUP.woff2') format('woff2');font-weight:normal;font-display:swap}
-:root{--ink:#111;--mut:rgba(0,0,0,.55);--rule:rgba(0,0,0,.35);--link:#0000ee;--bg:#fa853c;--paper:#fff}
+:root{--ink:#111;--mut:rgba(0,0,0,.55);--rule:rgba(0,0,0,.35);--link:#0000ee;--bg:#fa853c;--paper:var(--bg)}
 *{box-sizing:border-box}
 html{background:var(--bg)}
 html,body{overflow-x:hidden}
-body{margin:0;color:var(--ink);font-family:"Suit","Pretendard","Apple SD Gothic Neo",sans-serif;font-size:16px;font-weight:400;line-height:1.95;word-break:keep-all;-webkit-touch-callout:none}
+body{margin:0;color:var(--ink);font-family:"Suit","Pretendard","Apple SD Gothic Neo",sans-serif;font-size:16px;font-weight:600;line-height:1.95;word-break:keep-all;-webkit-touch-callout:none}
 main{max-width:38em;margin:0 auto;padding:40px 18px 140px}
 header{margin-bottom:56px}
 h1{font-family:'Cafe24ProUp','Suit',sans-serif;font-weight:normal;margin:0;line-height:1;word-break:keep-all;text-align:center}
-h1 .ln{display:block;white-space:nowrap;font-size:40px;line-height:1.02;letter-spacing:-.01em}
+h1 .ln{display:block;white-space:nowrap;font-size:40px;line-height:1.2;letter-spacing:-.01em}
 .meta{color:var(--mut);font-size:12px}
 .p{position:relative;padding:22px 0}
 .p .txt{margin:0;white-space:pre-wrap;user-select:none;-webkit-user-select:none}
 .p.pressing .txt{color:var(--mut)}
-.note{position:absolute;width:14em;max-width:78vw;font-family:'Cafe24ProUp','Suit',sans-serif;font-size:13px;line-height:1.55;background:#fff;border:1px solid var(--ink);padding:8px 10px;box-shadow:2px 2px 0 var(--ink);opacity:1;cursor:pointer;animation:drift var(--dur,12s) ease-in-out infinite alternate;user-select:none;-webkit-user-select:none;z-index:2}
+.note{position:absolute;width:14em;max-width:78vw;font-family:'Cafe24ProUp','Suit',sans-serif;font-size:13px;line-height:1.55;border:1px solid var(--ink);padding:8px 10px;box-shadow:2px 2px 0 var(--ink);opacity:1;background:var(--paper);cursor:pointer;animation:drift var(--dur,12s) ease-in-out infinite alternate;user-select:none;-webkit-user-select:none;z-index:2}
 .note.front{z-index:20;animation-play-state:paused;box-shadow:4px 4px 0 var(--ink);width:19em;max-width:88vw}
 .note .who{font-size:11px;color:var(--mut);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .note .who b{color:var(--ink)}
@@ -39,7 +39,7 @@ h1 .ln{display:block;white-space:nowrap;font-size:40px;line-height:1.02;letter-s
 .note.front .src{display:block}
 .note .to{font-size:10.5px;color:var(--mut)}
 @keyframes drift{from{transform:translate(0,0) rotate(var(--rot,0deg))}to{transform:translate(var(--dx,6px),var(--dy,-8px)) rotate(var(--rot,0deg))}}
-.compose{position:absolute;z-index:30;width:19em;max-width:86vw;background:#fff;border:1px solid var(--ink);padding:8px;display:flex;flex-direction:column;gap:6px;font-size:12px;box-shadow:0 4px 18px rgba(0,0,0,.16)}
+.compose{position:absolute;z-index:30;width:19em;max-width:86vw;background:var(--paper);border:1px solid var(--ink);padding:8px;display:flex;flex-direction:column;gap:6px;font-size:12px;box-shadow:0 4px 18px rgba(0,0,0,.16)}
 .compose .to{color:var(--mut);font-size:11px}
 input,textarea,button{font:inherit;color:inherit;border:1px solid var(--rule);background:#fafafa;padding:5px 7px;border-radius:0;width:100%}
 textarea{min-height:6em;resize:vertical;white-space:pre-wrap;line-height:1.6}
