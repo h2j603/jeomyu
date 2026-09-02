@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:'Cafe24ProUp';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2507-1@1.0/Cafe24PROUP.woff2') format('woff2');font-weight:normal;font-display:swap}
 :root{--ink:#111;--mut:#777;--rule:#ccc;--link:#0000ee;--bg:#fff;--paper:rgba(255,255,255,.94)}
 *{box-sizing:border-box}
 html{background:var(--bg)}
@@ -19,12 +20,12 @@ h1{font-size:14px;font-weight:700;margin:0 0 6px;line-height:1.6}
 .p{position:relative;padding:22px 0}
 .p .txt{margin:0;white-space:pre-wrap;user-select:none;-webkit-user-select:none}
 .p.pressing .txt{color:var(--mut)}
-.note{position:absolute;width:13em;max-width:70vw;font-size:11.5px;line-height:1.6;background:var(--paper);border:1px solid var(--rule);padding:6px 8px;box-shadow:0 1px 0 rgba(0,0,0,.06);opacity:.86;cursor:pointer;animation:drift var(--dur,12s) ease-in-out infinite alternate;transform-origin:center;user-select:none;-webkit-user-select:none;z-index:2}
-.note.front{opacity:1;z-index:20;animation-play-state:paused;box-shadow:0 2px 12px rgba(0,0,0,.14);border-color:var(--ink);width:17em;max-width:82vw}
+.note{position:absolute;width:14em;max-width:78vw;font-family:'Cafe24ProUp','Nanum Gothic Coding',sans-serif;font-size:13px;line-height:1.55;background:#fff;border:1px solid var(--ink);padding:8px 10px;box-shadow:2px 2px 0 var(--ink);opacity:1;cursor:pointer;animation:drift var(--dur,12s) ease-in-out infinite alternate;user-select:none;-webkit-user-select:none;z-index:2}
+.note.front{z-index:20;animation-play-state:paused;box-shadow:4px 4px 0 var(--ink);width:19em;max-width:88vw}
 .note .who{font-size:11px;color:var(--mut);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .note .who b{color:var(--ink)}
 .note .who a{color:var(--link);text-decoration:none;margin-left:.5em}
-.note .body{white-space:pre-wrap;overflow-wrap:anywhere;max-height:4.8em;overflow:hidden}
+.note .body{white-space:pre-wrap;overflow-wrap:anywhere;max-height:6.2em;overflow:hidden}
 .note.front .body{max-height:none}
 .note .src{font-size:10.5px;color:var(--mut);margin-top:3px;display:none}
 .note.front .src{display:block}
@@ -40,11 +41,6 @@ input:focus,textarea:focus{outline:none;border-color:var(--ink)}
 .btns .send{background:var(--ink);color:#fff;border-color:var(--ink)}
 .hint{font-size:11px;color:var(--mut)}
 footer{margin-top:80px;font-size:12px;color:var(--mut);border-top:1px solid var(--rule);padding-top:10px}
-.note.L{right:calc(100% - 4.5em)}
-.note.R{left:calc(100% - 4.5em)}
-.note.L.front{right:auto;left:0}
-.note.R.front{left:auto;right:0}
-@media (min-width:1000px){.note.L{right:calc(100% + 14px)}.note.R{left:calc(100% + 14px)}.note{opacity:.95}.note.L.front{right:calc(100% + 14px);left:auto}.note.R.front{left:calc(100% + 14px);right:auto}}
 @media (max-width:480px){body{font-size:13.5px}main{padding-top:28px}.p{padding:26px 0}}
 </style>
 </head>
@@ -91,14 +87,14 @@ const host=u=>{try{return new URL(u).host.replace(/^www\./,"")}catch(e){return u
 const hash=s=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return (h>>>0)/4294967295};
 // 시드 리플(각주)에 고정 위치 부여: 좌우 번갈아, 문단 높이 안에서 흩어짐
 const ALL=[];
-Object.entries(SEED).forEach(([p,arr])=>arr.forEach((r,k)=>{const h=hash(r.who+k);ALL.push({...r,id:"s"+p+k,p:+p,side:k%2?"R":"L",y:8+((k*37+h*50)%80)})}));
+Object.entries(SEED).forEach(([p,arr])=>arr.forEach((r,k)=>{const h=hash(r.who+k);ALL.push({...r,id:"s"+p+k,p:+p,x:(k%2?40:2)+h*22,y:4+((k*41+h*60)%70)})}));
 const notes=()=>[...ALL,...load()];
 function noteEl(r){
   const h=hash(r.id);
   const farm=r.farm?`<a href="${esc(r.farm)}" target="_blank" rel="noopener">⌂ ${esc(r.farmLabel||host(r.farm))}</a>`:"";
   const to=r.to?`<div class="to">↳ ${esc(r.to)}</div>`:"";
   const src=r.src?`<div class="src">${esc(r.src)}</div>`:"";
-  return `<div class="note ${r.side||"L"}" data-id="${r.id}" style="top:${r.y}%;--dur:${9+h*9}s;--dx:${(h-.5)*16}px;--dy:${-4-h*10}px;--rot:${(hash(r.id+"r")-.5)*3}deg">${to}<div class="who"><b>${esc(r.who)}</b>${farm}</div><div class="body">${esc(r.body)}</div>${src}</div>`;
+  return `<div class="note" data-id="${r.id}" style="left:${r.x}%;top:${r.y}%;--dur:${9+h*9}s;--dx:${(h-.5)*28}px;--dy:${-6-h*16}px;--rot:${(hash(r.id+"r")-.5)*5}deg">${to}<div class="who"><b>${esc(r.who)}</b>${farm}</div><div class="body">${esc(r.body)}</div>${src}</div>`;
 }
 function render(){
   const all=notes();
@@ -134,7 +130,7 @@ function openCompose(sec,cx,cy,note){
   f.innerHTML=`${to?`<div class="to">↳ ${esc(to)}에게</div>`:""}<input name="who" placeholder="이름" maxlength="40" required><input name="farm" placeholder="내 농장 주소 (URL, 선택)" inputmode="url"><textarea name="body" placeholder="텍스트만 받습니다. 특수문자로 꾸며도 됩니다." maxlength="2000" required></textarea><div class="btns"><button class="send" type="submit">남기기</button><button type="button" class="x">취소</button></div><div class="hint">이 브라우저에만 저장됩니다 (프로토타입)</div>`;
   sec.appendChild(f);f.who.focus();
   f.querySelector(".x").onclick=()=>f.remove();
-  f.onsubmit=ev=>{ev.preventDefault();const d=load();d.push({id:"u"+Date.now(),p:+sec.dataset.i,side:x<30?"L":"R",y,to,who:f.who.value.trim(),farm:f.farm.value.trim(),body:f.body.value.replace(/\s+$/,""),src:new Date().toISOString().slice(0,10)});save(d);render()};
+  f.onsubmit=ev=>{ev.preventDefault();const d=load();d.push({id:"u"+Date.now(),p:+sec.dataset.i,x,y,to,who:f.who.value.trim(),farm:f.farm.value.trim(),body:f.body.value.replace(/\s+$/,""),src:new Date().toISOString().slice(0,10)});save(d);render()};
 }
 render();
 </script>
