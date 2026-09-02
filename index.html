@@ -100,6 +100,7 @@ async function fetchAll(){
   render();
 }
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm=u=>{u=String(u||"").trim();if(!u)return "";if(!/^[a-z][a-z0-9+.-]*:/i.test(u))u="https://"+u;try{const x=new URL(u);return /^https?:$/.test(x.protocol)?x.href:""}catch(e){return ""}};
 const host=u=>{try{return new URL(u).host.replace(/^www\./,"")}catch(e){return u}};
 const hash=s=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return (h>>>0)/4294967295};
 // 시드 리플(각주)에 고정 위치 부여: 좌우 번갈아, 문단 높이 안에서 흩어짐
@@ -108,7 +109,7 @@ Object.entries(SEED).forEach(([p,arr])=>arr.forEach((r,k)=>{const h=hash(r.who+k
 const notes=()=>[...ALL,...USER];
 function noteEl(r){
   const h=hash(r.id);
-  const farm=r.farm?`<a href="${esc(r.farm)}" target="_blank" rel="noopener">${esc(r.farmLabel||host(r.farm))}</a>`:"";
+  const fu=norm(r.farm);const farm=fu?`<a href="${esc(fu)}" target="_blank" rel="noopener">${esc(r.farmLabel||host(fu))}</a>`:"";
   const to=r.to?`<div class="to">${esc(r.to)}에게</div>`:"";
   const src=r.src?`<div class="src">${esc(r.src)}</div>`:"";
   return `<div class="note" data-id="${r.id}" style="left:${r.x}%;top:${r.y}%;--dur:${9+h*9}s;--dx:${(h-.5)*28}px;--dy:${-6-h*16}px;--rot:${(hash(r.id+"r")-.5)*5}deg">${to}<div class="who"><b>${esc(r.who)}</b>${farm}</div><div class="body">${esc(r.body)}</div>${src}</div>`;
@@ -148,7 +149,7 @@ function openCompose(sec,cx,cy,note){
   sec.appendChild(f);f.who.focus();
   f.querySelector(".x").onclick=()=>f.remove();
   f.onsubmit=async ev=>{ev.preventDefault();const b=f.querySelector(".send");b.disabled=true;b.textContent="남기는 중…";
-    const row={p:+sec.dataset.i,x:+x.toFixed(2),y:+y.toFixed(2),who:f.who.value.trim(),farm:f.farm.value.trim()||null,body:f.body.value.replace(/\s+$/,""),reply_to:to||null};
+    const row={p:+sec.dataset.i,x:+x.toFixed(2),y:+y.toFixed(2),who:f.who.value.trim(),farm:norm(f.farm.value)||null,body:f.body.value.replace(/\s+$/,""),reply_to:to||null};
     try{const r=await fetch(SB.url+"/rest/v1/replies",{method:"POST",headers:{...H,Prefer:"return=minimal"},body:JSON.stringify(row)});
       if(!r.ok)throw new Error(r.status);await fetchAll();}
     catch(e){b.disabled=false;b.textContent="남기기";alert("저장 실패 — 잠시 후 다시 시도해줘")}};
