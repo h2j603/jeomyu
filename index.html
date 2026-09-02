@@ -18,7 +18,7 @@
 :root{--ink:#111;--mut:rgba(0,0,0,.55);--rule:rgba(0,0,0,.35);--link:var(--ink);--bg:#dce62e;--paper:var(--bg)}
 *{box-sizing:border-box}
 html{background:var(--bg)}
-html,body{overflow-x:hidden}
+html,body{overflow-x:clip}
 body{margin:0;color:var(--ink);font-family:"Suit","Pretendard","Apple SD Gothic Neo",sans-serif;font-size:16px;font-weight:600;line-height:1.95;word-break:keep-all;-webkit-touch-callout:none}
 main{max-width:38em;margin:0 auto;padding:40px 18px 140px}
 header{margin-bottom:56px}
@@ -57,6 +57,7 @@ sup a{color:var(--ink);text-decoration:none;padding:0 .1em}
 .fn a.back{margin-left:.4em}
 .fn a{color:var(--ink);text-decoration:underline;text-underline-offset:.15em}
 footer{margin-top:40px;font-size:12px;color:var(--mut);border-top:1px solid var(--rule);padding-top:10px}
+@media (max-width:768px){header{position:sticky;top:0;z-index:50;background:var(--bg);margin:0 -18px 40px;padding:24px 18px 14px}}
 @media (max-width:480px){body{font-size:16px}main{padding-top:28px}.p{padding:16px 14px}}
 </style>
 </head>
