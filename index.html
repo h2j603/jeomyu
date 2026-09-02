@@ -25,7 +25,8 @@ header{margin-bottom:56px}
 h1{font-family:'Cafe24ProUp','Suit',sans-serif;font-weight:normal;margin:0;line-height:1;word-break:keep-all;text-align:center}
 h1 .ln{display:block;white-space:nowrap;font-size:40px;line-height:1.2;letter-spacing:-.01em}
 .meta{color:var(--mut);font-size:12px}
-.p{position:relative;padding:18px 16px;margin:0 0 14px;border:1px solid var(--ink)}
+.p{position:relative;padding:18px 16px;margin:0;border:1px solid var(--ink)}
+.sep{font-family:'Cafe24ProUp','Suit',sans-serif;font-size:26px;line-height:1;text-align:center;padding:14px 0 10px;letter-spacing:.1em;user-select:none}
 .p .txt{margin:0;white-space:pre-wrap;user-select:none;-webkit-user-select:none}
 .p.pressing .txt{color:var(--mut)}
 .note{position:absolute;width:14em;max-width:78vw;font-family:'Cafe24ProUp','Suit',sans-serif;font-size:19px;line-height:1.5;border:1px solid var(--ink);padding:8px 10px;box-shadow:2px 2px 0 var(--ink);opacity:1;background:var(--paper);cursor:pointer;animation:drift var(--dur,12s) ease-in-out infinite alternate;user-select:none;-webkit-user-select:none;z-index:2}
@@ -114,7 +115,7 @@ function noteEl(r){
 }
 function render(){
   const all=notes();
-  document.getElementById("essay").innerHTML=P.map((t,i)=>`<section class="p" data-i="${i}"><p class="txt">${esc(t).replace(/\[\[(\d)\]\]/g,'<sup><a href="#fn$1" id="r$1">$1</a></sup>')}</p>${all.filter(r=>r.p===i).map(noteEl).join("")}</section>`).join("");
+  document.getElementById("essay").innerHTML=P.map((t,i)=>`${i?'<div class="sep">***</div>':""}<section class="p" data-i="${i}"><p class="txt">${esc(t).replace(/\[\[(\d)\]\]/g,'<sup><a href="#fn$1" id="r$1">$1</a></sup>')}</p>${all.filter(r=>r.p===i).map(noteEl).join("")}</section>`).join("");
   
 }
 // 탭: 리플 앞으로 / 뒤로
