@@ -7,50 +7,55 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#111;--mut:#777;--rule:#ccc;--link:#0000ee;--bg:#fff;--field:#fafafa}
+:root{--ink:#111;--mut:#777;--rule:#ccc;--link:#0000ee;--bg:#fff;--paper:rgba(255,255,255,.94)}
 *{box-sizing:border-box}
 html{background:var(--bg)}
-body{margin:0;color:var(--ink);font-family:"Nanum Gothic Coding","D2Coding","Apple SD Gothic Neo",monospace;font-size:14px;line-height:1.85;word-break:keep-all}
-main{max-width:38em;margin:0 auto;padding:40px 16px 120px}
-header{margin-bottom:40px}
+html,body{overflow-x:hidden}
+body{margin:0;color:var(--ink);font-family:"Nanum Gothic Coding","D2Coding","Apple SD Gothic Neo",monospace;font-size:14px;line-height:1.9;word-break:keep-all;-webkit-touch-callout:none}
+main{max-width:38em;margin:0 auto;padding:40px 18px 140px}
+header{margin-bottom:56px}
 h1{font-size:14px;font-weight:700;margin:0 0 6px;line-height:1.6}
 .meta{color:var(--mut);font-size:12px}
-.meta a{color:inherit}
-.p{position:relative;margin:0 0 4px}
-.p .txt{margin:0;padding:6px 0;white-space:pre-wrap}
-.re{list-style:none;margin:0 0 22px;padding:0}
-.re li{display:grid;grid-template-columns:1.6em 1fr;padding:8px 0;border-top:1px dotted var(--rule)}
-.re li:first-child{border-top:1px solid var(--rule)}
-.re .l{color:var(--mut)}
-.re .who{font-size:12px;color:var(--mut);margin-bottom:2px}
-.re .who b{color:var(--ink);font-weight:700}
-.re .who a{color:var(--link);text-decoration:none;margin-left:.6em}
-.re .who a:hover{text-decoration:underline}
-.re .body{white-space:pre-wrap;overflow-wrap:anywhere}
-.re .src{font-size:12px;color:var(--mut)}
-.add{display:grid;grid-template-columns:1.6em 1fr;padding:6px 0 0}
-.add button.open{all:unset;cursor:pointer;color:var(--mut);font-size:12px;padding:2px 0}
-.add button.open:hover{color:var(--ink);text-decoration:underline}
-form{display:none;gap:6px;flex-direction:column;padding:6px 0 4px}
-form.on{display:flex}
-input,textarea,button.send{font:inherit;color:inherit;border:1px solid var(--rule);background:var(--field);padding:6px 8px;border-radius:0;width:100%}
-textarea{min-height:7em;resize:vertical;white-space:pre-wrap;line-height:1.7}
+.p{position:relative;padding:22px 0}
+.p .txt{margin:0;white-space:pre-wrap;user-select:none;-webkit-user-select:none}
+.p.pressing .txt{color:var(--mut)}
+.note{position:absolute;width:13em;max-width:70vw;font-size:11.5px;line-height:1.6;background:var(--paper);border:1px solid var(--rule);padding:6px 8px;box-shadow:0 1px 0 rgba(0,0,0,.06);opacity:.86;cursor:pointer;animation:drift var(--dur,12s) ease-in-out infinite alternate;transform-origin:center;user-select:none;-webkit-user-select:none;z-index:2}
+.note.front{opacity:1;z-index:20;animation-play-state:paused;box-shadow:0 2px 12px rgba(0,0,0,.14);border-color:var(--ink);width:17em;max-width:82vw}
+.note .who{font-size:11px;color:var(--mut);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note .who b{color:var(--ink)}
+.note .who a{color:var(--link);text-decoration:none;margin-left:.5em}
+.note .body{white-space:pre-wrap;overflow-wrap:anywhere;max-height:4.8em;overflow:hidden}
+.note.front .body{max-height:none}
+.note .src{font-size:10.5px;color:var(--mut);margin-top:3px;display:none}
+.note.front .src{display:block}
+.note .to{font-size:10.5px;color:var(--mut)}
+@keyframes drift{from{transform:translate(0,0) rotate(var(--rot,0deg))}to{transform:translate(var(--dx,6px),var(--dy,-8px)) rotate(var(--rot,0deg))}}
+.compose{position:absolute;z-index:30;width:19em;max-width:86vw;background:#fff;border:1px solid var(--ink);padding:8px;display:flex;flex-direction:column;gap:6px;font-size:12px;box-shadow:0 4px 18px rgba(0,0,0,.16)}
+.compose .to{color:var(--mut);font-size:11px}
+input,textarea,button{font:inherit;color:inherit;border:1px solid var(--rule);background:#fafafa;padding:5px 7px;border-radius:0;width:100%}
+textarea{min-height:6em;resize:vertical;white-space:pre-wrap;line-height:1.6}
 input:focus,textarea:focus{outline:none;border-color:var(--ink)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-button.send{cursor:pointer;background:var(--ink);color:#fff;border-color:var(--ink);width:auto;justify-self:start;padding:6px 14px}
-.hint{font-size:12px;color:var(--mut)}
-footer{margin-top:60px;font-size:12px;color:var(--mut);border-top:1px solid var(--rule);padding-top:10px}
-@media (max-width:480px){body{font-size:13.5px}main{padding-top:28px}.row{grid-template-columns:1fr}}
+.btns{display:flex;gap:6px}
+.btns button{cursor:pointer;width:auto;padding:5px 12px}
+.btns .send{background:var(--ink);color:#fff;border-color:var(--ink)}
+.hint{font-size:11px;color:var(--mut)}
+footer{margin-top:80px;font-size:12px;color:var(--mut);border-top:1px solid var(--rule);padding-top:10px}
+.note.L{right:calc(100% - 4.5em)}
+.note.R{left:calc(100% - 4.5em)}
+.note.L.front{right:auto;left:0}
+.note.R.front{left:auto;right:0}
+@media (min-width:1000px){.note.L{right:calc(100% + 14px)}.note.R{left:calc(100% + 14px)}.note{opacity:.95}.note.L.front{right:calc(100% + 14px);left:auto}.note.R.front{left:calc(100% + 14px);right:auto}}
+@media (max-width:480px){body{font-size:13.5px}main{padding-top:28px}.p{padding:26px 0}}
 </style>
 </head>
 <body>
 <main>
 <header>
   <h1>웹을 본래와 다른 목적으로 점유하기</h1>
-  <div class="meta">장혁 · 2026 · 이 칸에 남은 리플 <span id="cnt">0</span>개 · 문단마다 리플을 달 수 있습니다</div>
+  <div class="meta">장혁 · 2026 · 이 칸에 남은 리플 <span id="cnt">0</span>개 · 글이나 리플을 길게 누르면 그 자리에 리플을 남길 수 있습니다</div>
 </header>
 <div id="essay"></div>
-<footer>이 페이지는 글이 아니라 댓글칸입니다. 텍스트만 받습니다. 유니코드는 깨지지 않습니다.</footer>
+<footer>이 페이지는 글이 아니라 댓글칸입니다. 텍스트만 받습니다. 유니코드는 깨지지 않습니다. 길게 누르면 리플.</footer>
 </main>
 <script>
 const P = [
@@ -78,43 +83,59 @@ const SEED = {
  7:[{who:"Laurel Schwulst",farm:"https://thecreativeindependent.com/essays/laurel-schwulst-my-website-is-a-shifting-house-next-to-a-river-of-knowledge-what-could-yours-be/",farmLabel:"thecreativeindependent.com",body:`a room is comforting because it’s finite, often with a specific intended purpose. Simultaneously, a room can be flexible: you can shift its contents or even include a temporary partition, depending on occasion.`,src:"“My website is a shifting house next to a river of knowledge. What could yours be?”, 2018"},
     {who:"are.na",farm:"https://www.are.na",farmLabel:"are.na",body:`블록과 채널로 자료를 모으는 리서치 아카이브 도구. hyuk.xyz는 이 채널을 CMS로 읽어 페이지를 만든다.`,src:""}]
 };
-const KEY="jeomyu-replies-v1";
-const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return {}}};
+const KEY="jeomyu-replies-v2";
+const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){return []}};
 const save=d=>{try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const host=u=>{try{return new URL(u).host.replace(/^www\./,"")}catch(e){return u}};
-function li(r){
+const hash=s=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return (h>>>0)/4294967295};
+// 시드 리플(각주)에 고정 위치 부여: 좌우 번갈아, 문단 높이 안에서 흩어짐
+const ALL=[];
+Object.entries(SEED).forEach(([p,arr])=>arr.forEach((r,k)=>{const h=hash(r.who+k);ALL.push({...r,id:"s"+p+k,p:+p,side:k%2?"R":"L",y:8+((k*37+h*50)%80)})}));
+const notes=()=>[...ALL,...load()];
+function noteEl(r){
+  const h=hash(r.id);
   const farm=r.farm?`<a href="${esc(r.farm)}" target="_blank" rel="noopener">⌂ ${esc(r.farmLabel||host(r.farm))}</a>`:"";
+  const to=r.to?`<div class="to">↳ ${esc(r.to)}</div>`:"";
   const src=r.src?`<div class="src">${esc(r.src)}</div>`:"";
-  return `<li><span class="l">└</span><div><div class="who"><b>${esc(r.who)}</b>${farm}</div><div class="body">${esc(r.body)}</div>${src}</div></li>`;
+  return `<div class="note ${r.side||"L"}" data-id="${r.id}" style="top:${r.y}%;--dur:${9+h*9}s;--dx:${(h-.5)*16}px;--dy:${-4-h*10}px;--rot:${(hash(r.id+"r")-.5)*3}deg">${to}<div class="who"><b>${esc(r.who)}</b>${farm}</div><div class="body">${esc(r.body)}</div>${src}</div>`;
 }
 function render(){
-  const mine=load();let n=0;
-  document.getElementById("essay").innerHTML=P.map((t,i)=>{
-    const rs=[...(SEED[i]||[]),...(mine[i]||[])];n+=rs.length;
-    return `<section class="p" data-i="${i}">
-<p class="txt">${esc(t)}</p>
-<ul class="re">${rs.map(li).join("")}</ul>
-<div class="add"><span class="l"></span><div>
-<button class="open" type="button">└ 이 문단에 리플 달기</button>
-<form>
-<div class="row"><input name="who" placeholder="이름" maxlength="40" required><input name="farm" placeholder="내 농장 주소 (URL, 선택)" inputmode="url"></div>
-<textarea name="body" placeholder="텍스트만 받습니다. 특수문자로 꾸며도 됩니다." maxlength="2000" required></textarea>
-<button class="send" type="submit">남기기</button>
-<div class="hint">남긴 리플은 이 브라우저에만 저장됩니다 (프로토타입)</div>
-</form></div></div></section>`;
-  }).join("");
-  document.getElementById("cnt").textContent=n;
+  const all=notes();
+  document.getElementById("essay").innerHTML=P.map((t,i)=>`<section class="p" data-i="${i}"><p class="txt">${esc(t)}</p>${all.filter(r=>r.p===i).map(noteEl).join("")}</section>`).join("");
+  document.getElementById("cnt").textContent=all.length;
 }
+// 탭: 리플 앞으로 / 뒤로
 document.addEventListener("click",e=>{
-  const b=e.target.closest("button.open");if(!b)return;
-  const f=b.nextElementSibling;f.classList.toggle("on");if(f.classList.contains("on"))f.who.focus();
+  if(e.target.closest(".compose"))return;
+  const n=e.target.closest(".note");
+  document.querySelectorAll(".note.front").forEach(x=>{if(x!==n)x.classList.remove("front")});
+  if(n&&!e.target.closest("a"))n.classList.toggle("front");
 });
-document.addEventListener("submit",e=>{
-  e.preventDefault();const f=e.target;const i=f.closest(".p").dataset.i;
-  const d=load();(d[i]=d[i]||[]).push({who:f.who.value.trim(),farm:f.farm.value.trim(),body:f.body.value.replace(/\s+$/,""),src:new Date().toISOString().slice(0,10)});
-  save(d);render();
+document.addEventListener("contextmenu",e=>{if(e.target.closest(".p"))e.preventDefault()});
+// 길게 누르기 → 그 자리에 작성칸
+let timer=null,sx=0,sy=0;
+document.addEventListener("pointerdown",e=>{
+  const sec=e.target.closest(".p");if(!sec||e.target.closest(".compose"))return;
+  sx=e.clientX;sy=e.clientY;sec.classList.add("pressing");
+  const note=e.target.closest(".note");
+  timer=setTimeout(()=>{sec.classList.remove("pressing");openCompose(sec,e.clientX,e.clientY,note)},520);
 });
+const cancel=()=>{clearTimeout(timer);timer=null;document.querySelectorAll(".p.pressing").forEach(x=>x.classList.remove("pressing"))};
+document.addEventListener("pointerup",cancel);document.addEventListener("pointercancel",cancel);
+document.addEventListener("pointermove",e=>{if(timer&&Math.hypot(e.clientX-sx,e.clientY-sy)>8)cancel()});
+function openCompose(sec,cx,cy,note){
+  document.querySelectorAll(".compose").forEach(x=>x.remove());
+  try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}
+  const b=sec.getBoundingClientRect();
+  const x=Math.max(0,Math.min(60,(cx-b.left)/b.width*100)),y=Math.max(0,Math.min(90,(cy-b.top)/b.height*100));
+  const to=note?note.querySelector(".who b").textContent:"";
+  const f=document.createElement("form");f.className="compose";f.style.left=x+"%";f.style.top=y+"%";
+  f.innerHTML=`${to?`<div class="to">↳ ${esc(to)}에게</div>`:""}<input name="who" placeholder="이름" maxlength="40" required><input name="farm" placeholder="내 농장 주소 (URL, 선택)" inputmode="url"><textarea name="body" placeholder="텍스트만 받습니다. 특수문자로 꾸며도 됩니다." maxlength="2000" required></textarea><div class="btns"><button class="send" type="submit">남기기</button><button type="button" class="x">취소</button></div><div class="hint">이 브라우저에만 저장됩니다 (프로토타입)</div>`;
+  sec.appendChild(f);f.who.focus();
+  f.querySelector(".x").onclick=()=>f.remove();
+  f.onsubmit=ev=>{ev.preventDefault();const d=load();d.push({id:"u"+Date.now(),p:+sec.dataset.i,side:x<30?"L":"R",y,to,who:f.who.value.trim(),farm:f.farm.value.trim(),body:f.body.value.replace(/\s+$/,""),src:new Date().toISOString().slice(0,10)});save(d);render()};
+}
 render();
 </script>
 </body>
