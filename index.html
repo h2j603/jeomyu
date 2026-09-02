@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>웹을 본래와 다른 목적으로 점유하기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111;--mut:#777;--rule:#ccc;--link:#0000ee;--bg:#fff;--field:#fafafa}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:"Nanum Gothic Coding","D2Coding","Apple SD Gothic Neo",monospace;font-size:14px;line-height:1.85;word-break:keep-all}
+main{max-width:38em;margin:0 auto;padding:40px 16px 120px}
+header{margin-bottom:40px}
+h1{font-size:14px;font-weight:700;margin:0 0 6px;line-height:1.6}
+.meta{color:var(--mut);font-size:12px}
+.meta a{color:inherit}
+.p{position:relative;margin:0 0 4px}
+.p .txt{margin:0;padding:6px 0;white-space:pre-wrap}
+.re{list-style:none;margin:0 0 22px;padding:0}
+.re li{display:grid;grid-template-columns:1.6em 1fr;padding:8px 0;border-top:1px dotted var(--rule)}
+.re li:first-child{border-top:1px solid var(--rule)}
+.re .l{color:var(--mut)}
+.re .who{font-size:12px;color:var(--mut);margin-bottom:2px}
+.re .who b{color:var(--ink);font-weight:700}
+.re .who a{color:var(--link);text-decoration:none;margin-left:.6em}
+.re .who a:hover{text-decoration:underline}
+.re .body{white-space:pre-wrap;overflow-wrap:anywhere}
+.re .src{font-size:12px;color:var(--mut)}
+.add{display:grid;grid-template-columns:1.6em 1fr;padding:6px 0 0}
+.add button.open{all:unset;cursor:pointer;color:var(--mut);font-size:12px;padding:2px 0}
+.add button.open:hover{color:var(--ink);text-decoration:underline}
+form{display:none;gap:6px;flex-direction:column;padding:6px 0 4px}
+form.on{display:flex}
+input,textarea,button.send{font:inherit;color:inherit;border:1px solid var(--rule);background:var(--field);padding:6px 8px;border-radius:0;width:100%}
+textarea{min-height:7em;resize:vertical;white-space:pre-wrap;line-height:1.7}
+input:focus,textarea:focus{outline:none;border-color:var(--ink)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+button.send{cursor:pointer;background:var(--ink);color:#fff;border-color:var(--ink);width:auto;justify-self:start;padding:6px 14px}
+.hint{font-size:12px;color:var(--mut)}
+footer{margin-top:60px;font-size:12px;color:var(--mut);border-top:1px solid var(--rule);padding-top:10px}
+@media (max-width:480px){body{font-size:13.5px}main{padding-top:28px}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>웹을 본래와 다른 목적으로 점유하기</h1>
+  <div class="meta">장혁 · 2026 · 이 칸에 남은 리플 <span id="cnt">0</span>개 · 문단마다 리플을 달 수 있습니다</div>
+</header>
+<div id="essay"></div>
+<footer>이 페이지는 글이 아니라 댓글칸입니다. 텍스트만 받습니다. 유니코드는 깨지지 않습니다.</footer>
+</main>
+<script>
+const P = [
+`웹은 개방적이다. 만든 사람이 용도를 정해둘 수는 있지만, 정해둔 대로만 쓰이는 법이 없다. 나는 그 틈이 웹의 매력이라고 생각한다.`,
+`바야흐로 장혁이 초등학생일 즈음, 쥬니버의 웹 게임 ‘동물농장’을 접한다. 각자의 농장에서 동물을 키워 평민에서 공작까지 신분상승(?)하는, 지금 생각하면 앞뒤가 잘 맞지 않는 게임이었다. 그런데 동물농장에는 게임보다 재미있는 것이 있었다. 농장을 미니홈피처럼 꾸밀 수 있었고, 남의 농장에 방명록처럼 댓글을 남길 수 있었다. 그 댓글칸에서 ‘리플’이라는 문화가 생겼다. 좋은 글귀를 바탕으로, 유니코드 특수문자를 한 자 한 자 쌓아 모양을 꾸민 댓글이다. 리플을 받으면 상대 농장에 가서 내 리플을 남기는 것이 놀이였다. 나 역시 동물을 키우는 것보다 리플을 만들고 남기는 데 관심이 쏠린 유저였다.`,
+`돌이켜보면 이건 타이포그래피였다. 이미지를 올릴 수도, 폰트를 고를 수도 없는 텍스트 칸에서 글자만으로 형태를 만든 것이다. 기능이 빈약했기 때문에 오히려 글자가 유일한 표현 수단이 됐다. Olia Lialina는 “이메일 클라이언트로 글을 쓰고, 엑셀로 명함을 조판하는” 사람들을 두고, 도구의 본래 목적과 무관하게 자기 목표를 이루는 사용자라는 뜻에서 ‘튜링 완전 사용자(Turing Complete User)’라 불렀다. 우리는 댓글칸으로 타이포그래피를 했다. 운영진은 그런 것을 설계한 적이 없다.`,
+`나는 이런 일을 ‘점유’라고 부르고 싶다. 농장의 소유권은 네이버에 있었지만, 그 칸을 실제로 쥐고 쓴 것은 우리였다. Michel de Certeau는 읽는 사람을 “남의 땅을 가로지르는 여행자, 자기가 쓰지 않은 들판을 밀렵하며 지나가는 유목민”에 비유했다. 다만 리플은 밀렵보다 눌러앉기에 가까웠다. 잠깐 훔쳐 쓰고 빠져나온 것이 아니라 거기서 살았다.`,
+`리플이 가능했던 조건은 셋이었다. 칸이 텍스트만 받았고, 남에게 보였고, 답례가 가능했다. 그래서 동물농장은 어느새 농장 게임이 아니라 리플을 주고받는 놀이터가 됐다. 사용자가 만든 용도가 본래 용도보다 흥하면 그 공간의 성격이 바뀐다.`,
+`지금의 웹은 이런 틈을 닫아가고 있다. 콘텐츠는 앱 안에 갇히고, 화면은 피드가 채우고, 댓글칸은 닫히거나 관리된다. 그래서 나는 점유가 일어나기를 기다리는 사용자로 남지 않기로 했다. 점유가 일어날 수 있는 공간을 직접 설계하려고 웹을 만든다.`,
+`물론 점유 자체는 설계할 수 없다. 점유는 디자이너가 아니라 방문자가 증명하는 것이다. HCI 연구자 Alan Dix는 사용자가 디자이너의 의도를 벗어나 기술을 제 것으로 만드는 일을 두고 이렇게 썼다. “예상 밖의 것을 위해 설계할 수는 없지만, 예상 밖의 것을 허용하도록 설계할 수는 있다.” 그가 제안한 원칙 중 두 가지—모든 것에 고정된 의미를 주지 말고 사용자가 제 의미를 붙일 자리를 남길 것, 사용자가 자기 전유를 남에게 자랑하게 할 것—는 리플의 조건과 정확히 겹친다. 텍스트만 받는 칸이 첫 번째였고, 답례가 두 번째였다. 디자이너가 할 수 있는 일은 칸을 헐렁하게 두는 것뿐이다.`,
+`그래서 내가 만드는 것은 정확히 말하면 점유의 시뮬레이션이다. Laurel Schwulst는 웹사이트를 방에 비유하며, 방은 “유한하고 대개 정해진 목적이 있어서 편안하지만, 동시에 유연해서 내용물을 옮기거나 임시 칸막이를 세울 수 있다”고 썼다. hyuk.xyz는 포트폴리오 사이트다. 포트폴리오라는 방의 정해진 목적은 나를 보여주는 것이다. 그런데 커튼—임시 칸막이—을 내리면 방명록이 나온다. 나를 보여주는 자리 뒤에 남이 쓰는 칸을 숨겨둔 것, 누군가 이 방에 눌러앉은 장면을 미리 무대에 올려둔 것이다. 사이트 자체도 리서치 아카이브 도구인 are.na 위에서 돌아간다. 남의 판에 눌러앉는 버릇은 여전하다.`,
+`시뮬레이션과 실제 점유 사이에는 거리가 있다. 리플의 세 조건 중 방명록에는 마지막 것이 없다. 방문자끼리 서로 찾아갈 농장이 없다. 커튼 뒤 방명록에는 아직 예상 밖의 글이 없다. 그 거리가 다음 작업의 자리다.`
+];
+// 각주 = 원저자가 해당 문단에 남긴 리플. 본문은 원문 그대로.
+const SEED = {
+ 2:[{who:"Olia Lialina",farm:"http://contemporary-home-computing.org/turing-complete-user/",farmLabel:"contemporary-home-computing.org",body:`General Purpose Users can write an article in their e-mail client, layout their business card in Excel and shave in front of a web cam.
+(…) what I mean are users who have the ability to achieve their goals regardless of the primary purpose of an application or device.`,src:"“Turing Complete User”, 2012"}],
+ 3:[{who:"Michel de Certeau",farm:"https://en.wikipedia.org/wiki/The_Practice_of_Everyday_Life",farmLabel:"The Practice of Everyday Life",body:`Readers are travellers; they move across lands belonging to someone else, like nomads poaching their way across fields they did not write.
+(…) The space of a tactic is the space of the other.`,src:"tr. Steven Rendall, 1984, ch. XII “Reading as Poaching”"},
+    {who:"민법 제192조",farm:"",farmLabel:"",body:`물건을 사실상 지배하는 자는 점유권이 있다.`,src:"소유와 점유의 구분이 웹에서는 플랫폼과 사용자 사이에 놓인다"}],
+ 4:[{who:"Chris Messina",farm:"https://en.wikipedia.org/wiki/Hashtag",farmLabel:"wikipedia.org/wiki/Hashtag",body:`더 큰 규모의 사례. 2007년 사용자가 트윗으로 제안한 # 관습을 트위터가 2009년에야 링크 기능으로 흡수했다. RT 역시 사용자들이 먼저 쓰던 표기다.`,src:""}],
+ 6:[{who:"Alan Dix",farm:"https://alandix.com/academic/papers/HCI2007-appropriation/",farmLabel:"alandix.com",body:`You may not be able to design for the unexpected, but you can design to allow the unexpected.
+· allow interpretation — include elements where users can add their own meanings
+· encourage sharing — People are proud of their appropriations of technology, so let them tell others about it!`,src:"“Designing for Appropriation”, BCS HCI 2007"}],
+ 7:[{who:"Laurel Schwulst",farm:"https://thecreativeindependent.com/essays/laurel-schwulst-my-website-is-a-shifting-house-next-to-a-river-of-knowledge-what-could-yours-be/",farmLabel:"thecreativeindependent.com",body:`a room is comforting because it’s finite, often with a specific intended purpose. Simultaneously, a room can be flexible: you can shift its contents or even include a temporary partition, depending on occasion.`,src:"“My website is a shifting house next to a river of knowledge. What could yours be?”, 2018"},
+    {who:"are.na",farm:"https://www.are.na",farmLabel:"are.na",body:`블록과 채널로 자료를 모으는 리서치 아카이브 도구. hyuk.xyz는 이 채널을 CMS로 읽어 페이지를 만든다.`,src:""}]
+};
+const KEY="jeomyu-replies-v1";
+const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){return {}}};
+const save=d=>{try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const host=u=>{try{return new URL(u).host.replace(/^www\./,"")}catch(e){return u}};
+function li(r){
+  const farm=r.farm?`<a href="${esc(r.farm)}" target="_blank" rel="noopener">⌂ ${esc(r.farmLabel||host(r.farm))}</a>`:"";
+  const src=r.src?`<div class="src">${esc(r.src)}</div>`:"";
+  return `<li><span class="l">└</span><div><div class="who"><b>${esc(r.who)}</b>${farm}</div><div class="body">${esc(r.body)}</div>${src}</div></li>`;
+}
+function render(){
+  const mine=load();let n=0;
+  document.getElementById("essay").innerHTML=P.map((t,i)=>{
+    const rs=[...(SEED[i]||[]),...(mine[i]||[])];n+=rs.length;
+    return `<section class="p" data-i="${i}">
+<p class="txt">${esc(t)}</p>
+<ul class="re">${rs.map(li).join("")}</ul>
+<div class="add"><span class="l"></span><div>
+<button class="open" type="button">└ 이 문단에 리플 달기</button>
+<form>
+<div class="row"><input name="who" placeholder="이름" maxlength="40" required><input name="farm" placeholder="내 농장 주소 (URL, 선택)" inputmode="url"></div>
+<textarea name="body" placeholder="텍스트만 받습니다. 특수문자로 꾸며도 됩니다." maxlength="2000" required></textarea>
+<button class="send" type="submit">남기기</button>
+<div class="hint">남긴 리플은 이 브라우저에만 저장됩니다 (프로토타입)</div>
+</form></div></div></section>`;
+  }).join("");
+  document.getElementById("cnt").textContent=n;
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button.open");if(!b)return;
+  const f=b.nextElementSibling;f.classList.toggle("on");if(f.classList.contains("on"))f.who.focus();
+});
+document.addEventListener("submit",e=>{
+  e.preventDefault();const f=e.target;const i=f.closest(".p").dataset.i;
+  const d=load();(d[i]=d[i]||[]).push({who:f.who.value.trim(),farm:f.farm.value.trim(),body:f.body.value.replace(/\s+$/,""),src:new Date().toISOString().slice(0,10)});
+  save(d);render();
+});
+render();
+</script>
+</body>
+</html>
