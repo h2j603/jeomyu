@@ -15,7 +15,7 @@
 @font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraBold.woff2') format('woff2');font-weight:800;font-display:swap}
 @font-face{font-family:'Suit';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Heavy.woff2') format('woff2');font-weight:900;font-display:swap}
 @font-face{font-family:'Cafe24ProUp';src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/2507-1@1.0/Cafe24PROUP.woff2') format('woff2');font-weight:normal;font-display:swap}
-:root{--ink:#111;--mut:rgba(0,0,0,.55);--rule:rgba(0,0,0,.35);--link:var(--ink);--bg:#fa853c;--paper:var(--bg)}
+:root{--ink:#111;--mut:rgba(0,0,0,.55);--rule:rgba(0,0,0,.35);--link:var(--ink);--bg:#dce62e;--paper:var(--bg)}
 *{box-sizing:border-box}
 html{background:var(--bg)}
 html,body{overflow-x:hidden}
@@ -44,6 +44,7 @@ h1 .ln{display:block;white-space:nowrap;font-size:40px;line-height:1.2;letter-sp
 input,textarea,button{font:inherit;color:inherit;border:1px solid var(--ink);background:transparent;padding:5px 7px;border-radius:0;width:100%}
 textarea{min-height:6em;resize:vertical;white-space:pre-wrap;line-height:1.6}
 input:focus,textarea:focus{outline:none;border-color:var(--ink)}
+::placeholder{color:var(--ink);opacity:1}
 .btns{display:flex;gap:6px}
 .btns button{cursor:pointer;width:auto;padding:5px 12px}
 .btns .send{text-decoration:underline;text-underline-offset:.15em}
