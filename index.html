@@ -116,19 +116,22 @@ function noteEl(r){
   const to=r.to?`<div class="to">${esc(r.to)}에게</div>`:"";
   const src=r.src?`<div class="src">${esc(r.src)}</div>`:"";
   const del=r.id[0]==="u"?`<form class="del"><input name="pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="비번" required><button type="submit">지우기</button></form>`:"";
-  return `<div class="note" data-id="${r.id}" style="left:${r.x}%;top:${r.y}%;--dur:${9+h*9}s;--dx:${(h-.5)*28}px;--dy:${-6-h*16}px;--rot:${(hash(r.id+"r")-.5)*5}deg">${to}<div class="who"><b>${esc(r.who)}</b>${farm}</div><div class="body">${esc(r.body)}</div>${src}${del}</div>`;
+  return `<div class="note" data-id="${r.id}" data-x="${r.x}" style="left:${r.x}%;top:${r.y}%;--dur:${9+h*9}s;--dx:${(h-.5)*28}px;--dy:${-6-h*16}px;--rot:${(hash(r.id+"r")-.5)*5}deg">${to}<div class="who"><b>${esc(r.who)}</b>${farm}</div><div class="body">${esc(r.body)}</div>${src}${del}</div>`;
 }
 function render(){
   const all=notes();
   document.getElementById("essay").innerHTML=P.map((t,i)=>`${i?'<div class="sep">***</div>':""}<section class="p" data-i="${i}"><p class="txt">${esc(t).replace(/\[\[(\d):([^\]]+)\]\]/g,'<a class="fnref" href="#fn$1" id="r$1">$2</a>').replace(/\{\{([^|]+)\|([^}]+)\}\}/g,'<a class="fnref" href="$2" target="_blank" rel="noopener">$1</a>')}</p>${all.filter(r=>r.p===i).map(noteEl).join("")}</section>`).join("");
-  
+  document.querySelectorAll(".note").forEach(clampX);
 }
+// 문단 오른쪽 밖으로 나가지 않게 (리플 카드·작성칸 공통)
+function clampX(el){const sw=el.parentElement.clientWidth,w=el.offsetWidth;if(el.offsetLeft+w>sw-4)el.style.left=Math.max(0,sw-w-4)+"px"}
+addEventListener("resize",()=>document.querySelectorAll(".note,.compose").forEach(clampX));
 // 탭: 리플 앞으로 / 뒤로
 document.addEventListener("click",e=>{
   if(e.target.closest(".compose")||e.target.closest(".del"))return;
   const n=e.target.closest(".note");
   document.querySelectorAll(".note.front").forEach(x=>{if(x!==n)x.classList.remove("front")});
-  if(n&&!e.target.closest("a"))n.classList.toggle("front");
+  if(n&&!e.target.closest("a")){n.classList.toggle("front");n.style.left=n.dataset.x+"%";clampX(n)}
 });
 document.addEventListener("contextmenu",e=>{if(e.target.closest(".p"))e.preventDefault()});
 // 리플 지우기: 남길 때 정한 4자리 비번
@@ -159,7 +162,7 @@ function openCompose(sec,cx,cy,note){
   const to=note?note.querySelector(".who b").textContent:"";
   const f=document.createElement("form");f.className="compose";f.style.left=x+"%";f.style.top=y+"%";
   f.innerHTML=`${to?`<div class="to">${esc(to)}에게</div>`:""}<input name="who" placeholder="이름" maxlength="40" required><input name="farm" placeholder="링크 (선택)" inputmode="url"><textarea name="body" placeholder="텍스트만 받습니다. 특수문자로 꾸며도 됩니다." maxlength="2000" required></textarea><input name="pin" placeholder="비번 4자리 (지울 때 씁니다)" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required><div class="btns"><button class="send" type="submit">남기기</button><button type="button" class="x">취소</button></div><div class="hint">남긴 리플은 모두에게 보입니다. 비번을 알면 지울 수 있습니다.</div>`;
-  sec.appendChild(f);f.who.focus();
+  sec.appendChild(f);clampX(f);f.who.focus();
   f.querySelector(".x").onclick=()=>f.remove();
   f.onsubmit=async ev=>{ev.preventDefault();const b=f.querySelector(".send");b.disabled=true;b.textContent="남기는 중…";
     const row={p:+sec.dataset.i,x:+x.toFixed(2),y:+y.toFixed(2),who:f.who.value.trim(),farm:norm(f.farm.value)||null,body:f.body.value.replace(/\s+$/,""),reply_to:to||null,pin:f.pin.value};
