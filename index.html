@@ -39,6 +39,10 @@ h1 .ln{display:block;white-space:nowrap;font-size:40px;line-height:1.2;letter-sp
 .note .src{font-size:13px;color:var(--mut);margin-top:3px;display:none}
 .note.front .src{display:block}
 .note .to{font-size:13px;color:var(--mut)}
+.note .del{display:none;gap:4px;margin-top:6px;font-size:13px}
+.note.front .del{display:flex}
+.note .del input{width:5em;padding:3px 6px}
+.note .del button{width:auto;padding:3px 8px;cursor:pointer;text-decoration:underline;text-underline-offset:.15em}
 @keyframes drift{from{transform:translate(0,0) rotate(var(--rot,0deg))}to{transform:translate(var(--dx,6px),var(--dy,-8px)) rotate(var(--rot,0deg))}}
 .compose{position:absolute;z-index:30;width:19em;max-width:86vw;background:var(--paper);border:1px solid var(--ink);padding:8px;display:flex;flex-direction:column;gap:6px;font-size:12px;box-shadow:0 4px 18px rgba(0,0,0,.16)}
 .compose .to{color:var(--mut);font-size:11px}
@@ -93,7 +97,7 @@ const SB={url:"https://zrpwdzfhtljptkcmjavc.supabase.co",key:"eyJhbGciOiJIUzI1Ni
 const H={apikey:SB.key,Authorization:"Bearer "+SB.key,"Content-Type":"application/json"};
 let USER=[];
 async function fetchAll(){
-  try{const r=await fetch(SB.url+"/rest/v1/replies?select=*&order=created_at",{headers:H});
+  try{const r=await fetch(SB.url+"/rest/v1/replies?select=id,p,x,y,who,farm,body,reply_to,created_at&order=created_at",{headers:H});
     USER=(await r.json()).map(w=>({id:"u"+w.id,p:w.p,x:w.x,y:w.y,to:w.reply_to||"",who:w.who,farm:w.farm||"",body:w.body,src:w.created_at.slice(0,10)}));
   }catch(e){USER=[]}
   render();
@@ -111,7 +115,8 @@ function noteEl(r){
   const fu=norm(r.farm);const farm=fu?`<a href="${esc(fu)}" target="_blank" rel="noopener">${esc(r.farmLabel||host(fu))}</a>`:"";
   const to=r.to?`<div class="to">${esc(r.to)}에게</div>`:"";
   const src=r.src?`<div class="src">${esc(r.src)}</div>`:"";
-  return `<div class="note" data-id="${r.id}" style="left:${r.x}%;top:${r.y}%;--dur:${9+h*9}s;--dx:${(h-.5)*28}px;--dy:${-6-h*16}px;--rot:${(hash(r.id+"r")-.5)*5}deg">${to}<div class="who"><b>${esc(r.who)}</b>${farm}</div><div class="body">${esc(r.body)}</div>${src}</div>`;
+  const del=r.id[0]==="u"?`<form class="del"><input name="pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="비번" required><button type="submit">지우기</button></form>`:"";
+  return `<div class="note" data-id="${r.id}" style="left:${r.x}%;top:${r.y}%;--dur:${9+h*9}s;--dx:${(h-.5)*28}px;--dy:${-6-h*16}px;--rot:${(hash(r.id+"r")-.5)*5}deg">${to}<div class="who"><b>${esc(r.who)}</b>${farm}</div><div class="body">${esc(r.body)}</div>${src}${del}</div>`;
 }
 function render(){
   const all=notes();
@@ -120,16 +125,25 @@ function render(){
 }
 // 탭: 리플 앞으로 / 뒤로
 document.addEventListener("click",e=>{
-  if(e.target.closest(".compose"))return;
+  if(e.target.closest(".compose")||e.target.closest(".del"))return;
   const n=e.target.closest(".note");
   document.querySelectorAll(".note.front").forEach(x=>{if(x!==n)x.classList.remove("front")});
   if(n&&!e.target.closest("a"))n.classList.toggle("front");
 });
 document.addEventListener("contextmenu",e=>{if(e.target.closest(".p"))e.preventDefault()});
+// 리플 지우기: 남길 때 정한 4자리 비번
+document.addEventListener("submit",async e=>{
+  const f=e.target.closest(".del");if(!f)return;e.preventDefault();
+  const id=+f.closest(".note").dataset.id.slice(1),b=f.querySelector("button");b.disabled=true;
+  try{const r=await fetch(SB.url+"/rest/v1/rpc/delete_reply",{method:"POST",headers:H,body:JSON.stringify({rid:id,pin:f.pin.value})});
+    if(!r.ok)throw new Error(r.status);
+    if(await r.json()===true)await fetchAll();else{b.disabled=false;f.pin.value="";f.pin.placeholder="틀림";f.pin.focus()}}
+  catch(err){b.disabled=false;alert("지우기 실패 — 잠시 후 다시 시도해줘")}
+});
 // 길게 누르기 → 그 자리에 작성칸
 let timer=null,sx=0,sy=0;
 document.addEventListener("pointerdown",e=>{
-  const sec=e.target.closest(".p");if(!sec||e.target.closest(".compose"))return;
+  const sec=e.target.closest(".p");if(!sec||e.target.closest(".compose")||e.target.closest(".del"))return;
   sx=e.clientX;sy=e.clientY;sec.classList.add("pressing");
   const note=e.target.closest(".note");
   timer=setTimeout(()=>{sec.classList.remove("pressing");openCompose(sec,e.clientX,e.clientY,note)},520);
@@ -144,12 +158,12 @@ function openCompose(sec,cx,cy,note){
   const x=Math.max(0,Math.min(60,(cx-b.left)/b.width*100)),y=Math.max(0,Math.min(90,(cy-b.top)/b.height*100));
   const to=note?note.querySelector(".who b").textContent:"";
   const f=document.createElement("form");f.className="compose";f.style.left=x+"%";f.style.top=y+"%";
-  f.innerHTML=`${to?`<div class="to">${esc(to)}에게</div>`:""}<input name="who" placeholder="이름" maxlength="40" required><input name="farm" placeholder="링크 (선택)" inputmode="url"><textarea name="body" placeholder="텍스트만 받습니다. 특수문자로 꾸며도 됩니다." maxlength="2000" required></textarea><div class="btns"><button class="send" type="submit">남기기</button><button type="button" class="x">취소</button></div><div class="hint">남긴 리플은 모두에게 보입니다. 지울 수 없습니다.</div>`;
+  f.innerHTML=`${to?`<div class="to">${esc(to)}에게</div>`:""}<input name="who" placeholder="이름" maxlength="40" required><input name="farm" placeholder="링크 (선택)" inputmode="url"><textarea name="body" placeholder="텍스트만 받습니다. 특수문자로 꾸며도 됩니다." maxlength="2000" required></textarea><input name="pin" placeholder="비번 4자리 (지울 때 씁니다)" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required><div class="btns"><button class="send" type="submit">남기기</button><button type="button" class="x">취소</button></div><div class="hint">남긴 리플은 모두에게 보입니다. 비번을 알면 지울 수 있습니다.</div>`;
   sec.appendChild(f);f.who.focus();
   f.querySelector(".x").onclick=()=>f.remove();
   f.onsubmit=async ev=>{ev.preventDefault();const b=f.querySelector(".send");b.disabled=true;b.textContent="남기는 중…";
-    const row={p:+sec.dataset.i,x:+x.toFixed(2),y:+y.toFixed(2),who:f.who.value.trim(),farm:norm(f.farm.value)||null,body:f.body.value.replace(/\s+$/,""),reply_to:to||null};
-    try{const r=await fetch(SB.url+"/rest/v1/replies",{method:"POST",headers:{...H,Prefer:"return=minimal"},body:JSON.stringify(row)});
+    const row={p:+sec.dataset.i,x:+x.toFixed(2),y:+y.toFixed(2),who:f.who.value.trim(),farm:norm(f.farm.value)||null,body:f.body.value.replace(/\s+$/,""),reply_to:to||null,pin:f.pin.value};
+    try{const r=await fetch(SB.url+"/rest/v1/rpc/add_reply",{method:"POST",headers:H,body:JSON.stringify(row)});
       if(!r.ok)throw new Error(r.status);await fetchAll();}
     catch(e){b.disabled=false;b.textContent="남기기";alert("저장 실패 — 잠시 후 다시 시도해줘")}};
 }
